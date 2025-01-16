@@ -1,5 +1,3 @@
-// src/main/java/com/example/adbenturback/controller/ActividadDemandanteController.java
-
 package com.example.adbenturback.controller;
 
 import com.example.adbenturback.dto.ActividadDemandanteDTO;
@@ -25,6 +23,7 @@ public class ActividadDemandanteController {
     @Autowired
     private DemandanteServiceImpl demandanteService;
 
+    //Metodo para reservar actividades
     @PostMapping("/reservar")
     public ResponseEntity<String> reservarActividad(@Valid @RequestBody ActividadDemandanteDTO actividadDemandanteDTO) {
         System.out.println("Recibiendo solicitud para reservar actividad...");
@@ -49,7 +48,7 @@ public class ActividadDemandanteController {
     }
     
 
-
+    //Metodo para obtener reservas por demandante
     @GetMapping("/demandante/{idDemandante}")
     public ResponseEntity<List<ActividadDemandanteDTO>> obtenerReservasPorDemandante(@PathVariable Long idDemandante) {
         try {
@@ -62,7 +61,7 @@ public class ActividadDemandanteController {
         }
     }
 
-
+    //Metodo para obtener la id del demandante filtrada por usuario
     @GetMapping("/usuarios/{userId}/demandante")
     public ResponseEntity<Long> obtenerIdDemandantePorUsuario(@PathVariable Long userId) {
         try {
@@ -78,6 +77,7 @@ public class ActividadDemandanteController {
         }
     }
 
+    //Metodo para eliminar reserva
     @DeleteMapping("/{idActividad}/{idDemandante}")
     public ResponseEntity<?> eliminarReserva(@PathVariable Long idActividad, @PathVariable Long idDemandante) {
         try {
@@ -89,7 +89,7 @@ public class ActividadDemandanteController {
     }
     
     
-
+    //Metodo para obtener una reserva por usuario
     @GetMapping("/usuario/{idUsuario}/reservas")
     public ResponseEntity<List<ActividadDemandanteDTO>> obtenerReservasPorUsuario(@PathVariable Long idUsuario) {
         try {
