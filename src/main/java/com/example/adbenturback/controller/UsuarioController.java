@@ -39,34 +39,7 @@ public class UsuarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/usuarios")
-    public List<UsuarioDTO> obtenerUsuarios() {
-        List<Usuario> usuarios = usuarioService.getAllUsuarios();
-        List<UsuarioDTO> usuariosDTO = usuarios.stream()
-                .map(usuario -> {
-                    UsuarioDTO usuarioDTO = new UsuarioDTO();
-                    usuarioDTO.setIdUsuario(usuario.getIdUsuario());
-                    usuarioDTO.setNombre(usuario.getNombre());
-                    usuarioDTO.setApellido1(usuario.getApellido1());
-                    usuarioDTO.setApellido2(usuario.getApellido2());
-                    usuarioDTO.setEmail(usuario.getEmail());
-                    usuarioDTO.setTelefono(usuario.getTelefono());
-                    usuarioDTO.setUsername(usuario.getUsername());
-                    usuarioDTO.setBiografia(usuario.getBiografia());
-                    usuarioDTO.setFechaRegistro(usuario.getFechaRegistro());
-                    usuarioDTO.setIdiomasHablados(usuario.getIdiomasHablados());
-                    usuarioDTO.setRol(usuario.getRol());
-                    if (usuario.getOfertante() != null) {
-                        usuarioDTO.setIdOfertante(usuario.getOfertante().getIdOfertante());
-                    }
-                    return usuarioDTO;
-                })
-                .collect(Collectors.toList());
-
-        logger.info("Usuarios encontrados: {}", usuariosDTO.size());
-        return usuariosDTO;
-    }
-
+    //Obtiene el usuario por id
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable Long id) {
         logger.info("Recibida solicitud para obtener usuario con ID: {}", id);
@@ -96,6 +69,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    //Metodo para registrar usuarios
     @PostMapping("/registrar")
     public ResponseEntity<UsuarioDTO> registrarUsuario(@RequestBody RegistroDTO registroDTO) {
         try {
@@ -175,6 +149,7 @@ public class UsuarioController {
         }
     }
 
+    //Actualizar usuario
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(
             @PathVariable Long id, 
@@ -188,7 +163,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     
-        String token = authorization.substring(7); // Eliminar el prefijo "Bearer "
+        String token = authorization.substring(7); 
         String usernameFromToken = jwtTokenUtil.getUsernameFromToken(token);
         logger.debug("Usuario extraído del token: {}", usernameFromToken);
     
@@ -218,7 +193,7 @@ public class UsuarioController {
     }
     
     
-
+    //Metodo para borrar un usuario
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<String> borrarUsuario(@PathVariable Long id) {
         Usuario usuario = usuarioService.getUsuarioById(id);
